@@ -19,6 +19,7 @@ import co.devhack.todoapp.presentation.presenter.LoginContract;
 import co.devhack.todoapp.presentation.presenter.LoginPresenter;
 import co.devhack.todoapp.presentation.view.activity.AuthActivity;
 import co.devhack.todoapp.presentation.view.activity.MainActivity;
+import co.devhack.todoapp.presentation.view.dialog.Forgot_PasswordFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,8 +77,8 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     }
 
     public void RecoveryPasswordFragment() {
-        RecoveryPasswordFragment recoveryPasswordFragment = RecoveryPasswordFragment.getInstance();
-        recoveryPasswordFragment.show(getFragmentManager(), null);
+        Forgot_PasswordFragment forgotPasswordFragment = Forgot_PasswordFragment.getInstance();
+        forgotPasswordFragment.show(getFragmentManager(), null);
     }
 
     private void onLogin() {

@@ -11,4 +11,6 @@ public interface UserRepository {
     void login(String email, String password, Callback<User> callback);
 
     void signUp(User user, Callback<User> callback);
+
+    void forgotPassword(String email, Callback<Boolean> callback);
 }
