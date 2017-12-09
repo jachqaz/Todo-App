@@ -11,6 +11,10 @@ public interface LoginContract {
         void goToMainActivity();
 
         void showMessageError(Exception error);
+
+        void showProgress();
+
+        void hideProgress();
     }
 
     interface UserActionsListener {

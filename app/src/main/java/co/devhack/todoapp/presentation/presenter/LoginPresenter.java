@@ -20,14 +20,17 @@ public class LoginPresenter implements LoginContract.UserActionsListener {
 
     @Override
     public void onLogin(String email, String password, boolean remember) {
+        view.showProgress();
         userUseCase.login(email, password, remember, new Callback<User>() {
             @Override
             public void success(User result) {
+                view.hideProgress();
                 view.goToMainActivity();
             }
 
             @Override
             public void error(Exception error) {
+                view.hideProgress();
                 view.showMessageError(error);
             }
         });
