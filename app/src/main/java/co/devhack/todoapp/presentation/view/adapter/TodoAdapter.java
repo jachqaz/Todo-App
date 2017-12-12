@@ -1,5 +1,6 @@
 package co.devhack.todoapp.presentation.view.adapter;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,11 @@ import co.devhack.todoapp.domain.model.Todo;
  */
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder> {
-
     private List<Todo> dataSet;
-
+    private OnTodoFinishChange onTodoFinishChange;
     public TodoAdapter(List<Todo> dataSet) {
         this.dataSet = dataSet;
+        this.onTodoFinishChange = onTodoFinishChange;
     }
 
     @Override
@@ -34,17 +35,29 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
     @Override
     public void onBindViewHolder(TodoViewHolder holder, int position) {
         Todo todo = dataSet.get(position);
+        try {
+            holder.cbFinished.setChecked(todo.getFinished());
+            holder.cbFinished.setText(todo.getDescription());
+            //TODO holder.ivPhoto.
+            //TODO FORMATEAR FECHA USANDO java.text.SimpleDateFormat
+            holder.tvFinishDate.setText(todo.getFinishDate().toString());
+            if (todo.getFinished()) {
+                holder.tvFinishDate.setPaintFlags(holder.tvFinishDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                holder.tvFinishDate.setPaintFlags(holder.tvFinishDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+        } catch (Exception e) {
 
-        holder.cbFinished.setChecked(todo.getFinished());
-        holder.cbFinished.setText(todo.getDescription());
-        //TODO holder.ivPhoto.
-        //TODO FORMATEAR FECHA USANDO java.text.SimpleDateFormat
-        holder.tvFinishDate.setText(todo.getFinishDate().toString());
+        }
     }
 
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public interface OnTodoFinishChange {
+        void onTodoFinishChange(int position, boolean finished);
     }
 
     public class TodoViewHolder extends RecyclerView.ViewHolder {
@@ -59,6 +72,15 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
             cbFinished = itemView.findViewById(R.id.cbFinished);
             ivPhoto = itemView.findViewById(R.id.ivPhoto);
             tvFinishDate = itemView.findViewById(R.id.tvFinishDate);
+            if (onTodoFinishChange != null) {
+                cbFinished.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position = getAdapterPosition();
+                        onTodoFinishChange.onTodoFinishChange(position, cbFinished.isChecked());
+                    }
+                });
+            }
         }
     }
 

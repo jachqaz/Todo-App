@@ -1,5 +1,6 @@
 package co.devhack.todoapp.repository.impl;
 
+import java.io.IOException;
 import java.util.List;
 
 import co.devhack.todoapp.domain.model.Todo;
@@ -9,7 +10,9 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -35,13 +38,25 @@ public class TodoRestRepository implements TodoRepository {
     }
 
     @Override
-    public void update(Todo todo) {
+    public void update(Todo todo) throws Exception {
         //TODO IMPLEMENTAR
+
+        Retrofit retrofit = RetrofitSingleton.getInstance();
+        TodoService todoService = retrofit.create(TodoService.class);
+        Call<Todo> call = todoService.update(todo.getId(), todo);
+
+        Response<Todo> response = call.execute();
+
     }
 
     @Override
-    public void delete(Todo todo) {
+    public void delete(Todo todo) throws IOException {
         //TODO IMPLEMENTAR
+        Retrofit retrofit = RetrofitSingleton.getInstance();
+        TodoService todoService = retrofit.create(TodoService.class);
+        Call<Todo> call = todoService.delete(todo.getId(), todo);
+
+        Response<Todo> response = call.execute();
     }
 
     @Override
@@ -61,5 +76,11 @@ public class TodoRestRepository implements TodoRepository {
 
         @GET("todos.json")
         Call<List<Todo>> getAll();
+
+        @POST("todos.json")
+        Call<Todo> update(@Path("id") Integer id, @Body Todo todo);
+
+        @DELETE("todos.json")
+        Call<Todo> delete(@Path("id") Integer id, @Body Todo todo);
     }
 }
