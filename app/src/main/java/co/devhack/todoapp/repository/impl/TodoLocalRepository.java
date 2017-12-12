@@ -19,15 +19,14 @@ import co.devhack.todoapp.repository.TodoRepository;
 public class TodoLocalRepository implements TodoRepository {
 
     @Override
-    public void insert(Todo todo) {
+    public Long insert(Todo todo) {
         AppDatabase db = AppDatabase.getInstance();
         TodoDao todoDao = db.todoDao();
-        todoDao.insert(todo);
+        return todoDao.insert(todo);
     }
 
     @Override
     public void update(Todo todo) {
-        //TODO IMPLEMENTAR
         AppDatabase db = AppDatabase.getInstance();
         TodoDao todoDao = db.todoDao();
         todoDao.update(todo);
@@ -35,7 +34,6 @@ public class TodoLocalRepository implements TodoRepository {
 
     @Override
     public void delete(Todo todo) {
-        //TODO IMPLEMETAR
         AppDatabase db = AppDatabase.getInstance();
         TodoDao todoDao = db.todoDao();
         todoDao.delete(todo);
@@ -51,7 +49,7 @@ public class TodoLocalRepository implements TodoRepository {
     @Dao
     public interface TodoDao {
         @Insert
-        void insert(Todo todo);
+        Long insert(Todo todo);
 
         @Update
         void update(Todo todo);
